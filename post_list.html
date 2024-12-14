@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Universitario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Barra de navegación */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Contenedor principal */
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Títulos */
+        h2 {
+            color: #d32f2f;
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Lista de publicaciones */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        small {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Botones de interacción */
+        .btn {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #b71c1c;
+        }
+
+        /* Formulario para crear publicaciones */
+        .post-create-form {
+            margin-bottom: 30px;
+        }
+
+        .post-create-form input, .post-create-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .post-create-form button {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .post-create-form button:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Blog Universitario</h1>
+        <nav>
+            <a href="{% url 'post_list' %}">Inicio</a>
+            <a href="{% url 'noticias' %}">Noticias</a>
+            <a href="{% url 'eventos' %}">Eventos</a>
+            <a href="{% url 'contactos' %}">Contactos</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Noticias y Publicaciones</h2>
+
+        <!-- Formulario para crear una nueva publicación -->
+        <section class="post-create-form">
+            <h3>Crear una nueva publicación</h3>
+            <form method="POST" action="{% url 'post_create' %}">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="Título de la publicación" required>
+                <textarea name="content" placeholder="Contenido de la publicación" required></textarea>
+                <button type="submit">Crear publicación</button>
+            </form>
+        </section>
+
+        <!-- Lista de publicaciones -->
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+                    <p>{{ post.content }}</p>
+                    <small>Publicado el {{ post.created_at }}</small>
+                    <br><br>
+                    <a href="{% url 'add_comment' post.id %}" class="btn">Comentar</a>
+                </li>
+            {% empty %}
+                <li>No hay publicaciones disponibles.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Blog Universitario - Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>

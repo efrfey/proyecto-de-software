@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Blog Universitario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            position: relative;
+        }
+
+        header .welcome {
+            font-size: 16px;
+            color: white;
+            position: absolute;
+            top: 15px;
+            left: 20px;
+        }
+
+        header .profile {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: white;
+            position: absolute;
+            top: 40px;
+            left: 20px;
+        }
+
+        header .profile img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+            text-align: center;
+        }
+
+        nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        nav .active {
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #d32f2f;
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        .btn {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #b71c1c;
+        }
+
+        .post-feed {
+            margin-top: 20px;
+        }
+
+        .post-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-item h3 {
+            margin-top: 0;
+        }
+
+        .post-item p {
+            margin: 10px 0;
+        }
+
+        .post-item .post-meta {
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="welcome">Bienvenidos</div>
+        <div class="profile">
+            <!-- Aquí cargamos la imagen de perfil o la predeterminada si no existe -->
+            <img src="{% static 'images/default_profile.png' %}" alt="Foto de perfil">
+            <span>{{ user.username }}</span>
+        </div>
+        <h1>Blog Universitario</h1>
+        <nav>
+            <a href="{% url 'inicio' %}" class="{% if request.path == '/' %}active{% endif %}">Inicio</a>
+            <a href="{% url 'noticias' %}" class="{% if request.path == '/noticias/' %}active{% endif %}">Noticias</a>
+            <a href="{% url 'eventos' %}" class="{% if request.path == '/eventos/' %}active{% endif %}">Eventos</a>
+            <a href="{% url 'contactos' %}" class="{% if request.path == '/contactos/' %}active{% endif %}">Contactos</a>
+        </nav>
+        <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
+    </header>
+
+    <div class="container">
+        <h2>Publicaciones recientes</h2>
+        <div class="post-feed">
+            {% for post in news_posts %}
+                <div class="post-item">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.content|truncatewords:20 }}</p>
+                    <p class="post-meta">Publicado por {{ post.author.username }} hace {{ post.created_at|timesince }}.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Blog Universitario - Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>
+
+
+
+
